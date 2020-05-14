@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+option go_package = "github.com/abd45/simplechat/simplechat";
+
+package simplechat;
+
+service SimpleChat {
+	rpc RegisterUser(User) returns (Acknowledge) {}
+	rpc SendMessage(stream Conversation) returns (Acknowledge) {}
+        rpc ReceiveMessage(User) returns (stream Conversation) {}
+}
+
+message Conversation {
+	string ping = 1;
+	string username = 2;
+}
+
+message Acknowledge {
+	bool ack = 1;
+}
+
+message User {
+	string username = 1;
+}
