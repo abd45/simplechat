@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-chat
+spec:
+  selector:
+    matchLabels:
+      run: simplechat-server
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        run: simplechat-server
+    spec:
+      containers:
+        - name: simple-chat
+          image: quay.io/abdasgupta/simplechat-server
+          ports:
+            - containerPort: 10001
+              name: chat-port
+              protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: simplechat-service
+spec:
+  type: NodePort
+  selector:
+    run: simplechat-server
+  ports:
+    - protocol: TCP
+      port: 10001
+      targetPort: chat-port
